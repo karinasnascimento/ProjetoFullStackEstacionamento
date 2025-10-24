@@ -2,6 +2,7 @@ console.log("App.js funcionando");
 
 const API = "http://localhost:3000/lerveiculos";
 const APIPagamento = "http://localhost:3000/atualizarpagamento";
+const APIDeletar = "http://localhost:3000/deletarveiculo";
 
 async function carregar() {
 
@@ -25,7 +26,10 @@ async function carregar() {
             <td>${carro.pago ? "✅Sim" : "❌Não"}</td>
             <td>
                 <button onclick="pagar(${carro.id}, ${carro.pago})">
-                PATCH ${carro.pago ? '<span style="color:blue">Cancelar</span>' : '<span style="color:green">Pagar</span>'}
+                    PATCH ${carro.pago ? '<span style="color:blue">Cancelar</span>' : '<span style="color:green">Pagar</span>'}
+                </button>
+                <button onclick="deletar(${carro.id})">
+                    DELETE ${carro.id ? '<span style="color:red">Deletar</span>' : '<span style="color:blue">Cancelar</span>'}
                 </button>
             </td>
         </tr>
@@ -42,6 +46,18 @@ async function pagar(id, pagoAtual) {
         method: "PATCH",
         headers: {"Content-type" : "application/json"},
         body: JSON.stringify({pago: !pagoAtual}) //o !pagoAtual inverte o valor
+    });
+    carregar();
+}
+
+async function deletar(id, deletar) {
+    console.log(id);
+    console.log(deletar);
+
+    await fetch(`${APIDeletar}/${id}`,{
+        method: "DELETE",
+        headers: {"Content-type" : "application/json"},
+        body: JSON.stringify({carro: !deletar}) //o !deletar inverte o valor
     });
     carregar();
 }

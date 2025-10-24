@@ -45,6 +45,33 @@ app.patch("/atualizarpagamento/:id",(req,res)=>{
     res.json(veiculo);
 });
 
+// app.delete("/deletarcarro/:id",(req,res)=>{
+
+//     const veiculo = VEICULOS.find(x => x.id === Number(req.params.id));
+
+//     if (!veiculo) return res.status(404).json({erro: "Não encontrado"});
+
+//     const {carro} = req.body;
+
+//     if(carro !== undefined) veiculo.carro = carro;
+
+//     res.json(veiculo);
+// });
+app.delete("/deletarveiculo/:id", (req, res) =>{
+    const id = Number(req.params.id);
+    const indice = VEICULOS.findIndex(carro => carro.id === id)
+
+    if(indice === -1){
+        return res.status(404).json({
+            msg: "Carro não encontrado ou já foi deletado"
+        })
+    }
+
+    console.log(indice)
+    VEICULOS.splice(indice, 1);
+    res.status(204).json({msg: "Deletado com sucesso"});
+});  
+
 app.listen(porta,() => {
     console.log(`Servidor rodando no http://localhost:${porta}`);
 });
